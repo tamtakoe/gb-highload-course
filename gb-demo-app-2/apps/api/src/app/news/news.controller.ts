@@ -1,5 +1,15 @@
 import { Body, Controller, Get, Header, Post } from '@nestjs/common';
 
+import { IsNotEmpty } from 'class-validator';
+
+export class CreateNewsDto {
+  @IsNotEmpty()
+  title: string;
+
+  @IsNotEmpty()
+  description: string;
+}
+
 @Controller('news')
 export class NewsController {
   @Get()
@@ -22,11 +32,11 @@ export class NewsController {
 
   @Post()
   @Header('Cache-Control', 'none')
-  create(@Body() peaceOfNews) {
+  create(@Body() peaceOfNews: CreateNewsDto) {
     return new Promise(resolve => {
       setTimeout(() => {
         console.log('Новость успешно создана', peaceOfNews);
-        resolve(peaceOfNews);
+        resolve({ id: Math.ceil(Math.random() * 1000), ...peaceOfNews });
       }, 100)
     });
   }

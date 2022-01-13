@@ -3,15 +3,26 @@ import { useEffect, useState } from 'react';
 
 /* eslint-disable-next-line */
 export interface NewsProps {}
+export interface PeaceOfNews {
+  id: number,
+  title: string,
+  description: string,
+  createdAt: number
+}
 
 export function News(props: NewsProps) {
-  const [news, setNews] = useState([] as any[]);
+  const [news, setNews] = useState([] as PeaceOfNews[]);
+  const sortNews = (news: PeaceOfNews[]) => {
+    return news.sort((a, b) => a.createdAt - b.createdAt)
+  }
 
   useEffect(() => {
     fetch('http://localhost:3333/api/news')
       .then(response => response.json())
       .then(news => {
-        setNews(news);
+        const sortedNews = sortNews(news);
+
+        setNews(sortedNews);
       })
   }, []);
 
