@@ -29,7 +29,7 @@ WORKDIR /opt/$APPLICATION_NAME
 COPY --from=build-stage /opt/$APPLICATION_NAME/node_modules /opt/$APPLICATION_NAME/node_modules
 COPY --from=build-stage /opt/$APPLICATION_NAME/dist/ /opt/$APPLICATION_NAME/start.sh /opt/$APPLICATION_NAME/
 
-EXPOSE 3333
+EXPOSE 3001
 
 # Run with --restart=on-failure
 CMD ["./start.sh"]
