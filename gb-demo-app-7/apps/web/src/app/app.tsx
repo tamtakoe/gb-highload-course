@@ -4,6 +4,7 @@ import NxWelcome from './nx-welcome';
 import { Route, Link } from 'react-router-dom';
 import News from './news/news';
 import CreateNews from './create-news/create-news';
+import { Main } from './main/main';
 
 export function App() {
   return (
@@ -27,27 +28,9 @@ export function App() {
           </li>
         </ul>
       </div>
-      <Route
-        path="/"
-        exact
-        render={() => (
-          <h1>Главная страница</h1>
-        )}
-      />
-      <Route
-        path="/news"
-        exact
-        render={() => (
-          <News />
-        )}
-      />
-      <Route
-        path="/create"
-        exact
-        render={() => (
-          <CreateNews />
-        )}
-      />
+      <Route path="/" exact render={() => <Main />} />
+      <Route path="/news" exact render={() => <News />} />
+      <Route path="/create" exact render={() => <CreateNews />} />
       {/* END: routes */}
     </>
   );
