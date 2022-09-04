@@ -4,16 +4,23 @@ import React, { ChangeEvent } from 'react';
 /* eslint-disable-next-line */
 export interface CreateNewsProps {}
 export interface CreateNewsState {
-  title: string,
-  description: string,
+  author: string;
+  title: string;
+  description: string;
+  createdAt: number;
 }
 
-class CreateNews extends React.Component<CreateNewsProps, Partial<CreateNewsState>>{
+class CreateNews extends React.Component<
+  CreateNewsProps,
+  Partial<CreateNewsState>
+> {
   constructor(props: CreateNewsProps) {
     super(props);
     this.state = {
+      author: '',
       title: '',
-      description: ''
+      description: '',
+      createdAt: 0,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -34,12 +41,12 @@ class CreateNews extends React.Component<CreateNewsProps, Partial<CreateNewsStat
       },
       body: JSON.stringify(this.state),
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         alert(this.state.title + ' успешно создана!');
         this.setState({
           title: '',
-          description: ''
+          description: '',
         });
       })
       .catch((error) => {
@@ -53,14 +60,37 @@ class CreateNews extends React.Component<CreateNewsProps, Partial<CreateNewsStat
         <h1>Создание новости</h1>
         <p>
           <label>
+            <h4>Автор</h4>
+            <input
+              required
+              name="author"
+              type="text"
+              value={this.state.author}
+              onChange={this.handleChange}
+            />
+          </label>
+        </p>
+        <p>
+          <label>
             <h4>Заголовок</h4>
-            <input required name="title" type="text" value={this.state.title} onChange={this.handleChange} />
+            <input
+              required
+              name="title"
+              type="text"
+              value={this.state.title}
+              onChange={this.handleChange}
+            />
           </label>
         </p>
         <p>
           <label>
             <h4>Текст</h4>
-            <textarea required name="description" value={this.state.description} onChange={this.handleChange} />
+            <textarea
+              required
+              name="description"
+              value={this.state.description}
+              onChange={this.handleChange}
+            />
           </label>
         </p>
         <input type="submit" value="Добавить" />
