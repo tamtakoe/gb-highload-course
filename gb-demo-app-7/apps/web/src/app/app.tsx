@@ -1,23 +1,22 @@
 import styles from './app.module.scss';
 import NxWelcome from './nx-welcome';
 
-import { Route, Link } from 'react-router-dom';
+import { Route, Routes, Link } from 'react-router-dom';
 import News from './news/news';
 import CreateNews from './create-news/create-news';
+import { Main } from './main/main';
+import Chat from './chat/chat';
 
 export function App() {
   return (
     <>
-      {/*<NxWelcome title="web" />*/}
-      <div />
-
-      {/* START: routes */}
-      {/* These routes and navigation have been generated for you */}
-      {/* Feel free to move and update them to fit your needs */}
       <div role="navigation">
         <ul>
           <li>
             <Link to="/">Главная</Link>
+          </li>
+          <li>
+            <Link to="/chat">Чат</Link>
           </li>
           <li>
             <Link to="/news">Новости</Link>
@@ -27,28 +26,17 @@ export function App() {
           </li>
         </ul>
       </div>
-      <Route
-        path="/"
-        exact
-        render={() => (
-          <h1>Главная страница</h1>
-        )}
-      />
-      <Route
-        path="/news"
-        exact
-        render={() => (
-          <News />
-        )}
-      />
-      <Route
-        path="/create"
-        exact
-        render={() => (
-          <CreateNews />
-        )}
-      />
-      {/* END: routes */}
+
+      <Routes>
+        {/* <Route path="/" exact render={() => <Main />} />
+        <Route path="/chat" exact render={() => <Chat />} />
+        <Route path="/news" exact render={() => <News />} />
+        <Route path="/create" exact render={() => <CreateNews />} /> */}
+        <Route path="/" element={<Main />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/news" element={<News />} />
+        <Route path="/create" element={<CreateNews />} />
+      </Routes>
     </>
   );
 }

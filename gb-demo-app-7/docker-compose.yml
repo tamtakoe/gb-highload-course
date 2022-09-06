@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  api:
+    container_name: api
+    build:
+      context: ./
+    # network_mode: 'container:redis'
+    network_mode: my-net
+    links:
+      - 'redis:redis'
+    command: su -c "node ./main.js"
+    ports:
+      - 3001:3001
+
+    depends_on:
+      - redis
+
+  ####
+
+  nginx:
+    container_name: nginx
+    build:
+      context: ./
+      dockerfile: Dockerfile-nginx
+    entrypoint: ['nginx', '-g', 'daemon off;']
+    ports:
+      - 80:80
+
+    # depends_on:
+    #   - api
+
+  redis:
+    container_name: redis-cont
+    build:
+      context: ./gb-demo-redis
+
+    # network_mode: 'bridge'
+    network_mode: my-net
+
+    command: redis-server ./redis.conf
+    ports:
+      - 6379:6379

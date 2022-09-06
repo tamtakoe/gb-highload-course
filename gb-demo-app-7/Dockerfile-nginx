@@ -1,0 +1,36 @@
+FROM node:14 as build-stage
+
+MAINTAINER GeekBrains <support@geekbrains.ru>
+USER root
+
+ENV APPLICATION_NAME=gb-less8-web
+ENV SASS_BINARY_PATH=/opt/$APPLICATION_NAME/bin/vendor/linux-x64/binding.node
+WORKDIR /opt/$APPLICATION_NAME
+
+# Optimization. If package.json etc. have no changes Docker skips `npm ci`
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY ./ ./
+
+# RUN npm run test
+
+RUN npm run build
+RUN npm prune --production
+
+####
+
+FROM nginx:alpine as production-stage
+
+ENV APPLICATION_NAME=gb-less8-web
+ENV NODE_ENV=production
+WORKDIR /opt/$APPLICATION_NAME
+
+RUN rm -rf /usr/share/nginx/html/
+
+COPY --from=build-stage /opt/$APPLICATION_NAME/dist/apps/web /usr/share/nginx/html
+
+# EXPOSE 80
+
+# ENTRYPOINT ["nginx", "-g", "daemon off;"]

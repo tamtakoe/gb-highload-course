@@ -1,6 +1,8 @@
 import './news.module.scss';
 import { useEffect, useState } from 'react';
 
+const cash = new Set();
+
 /* eslint-disable-next-line */
 export interface NewsProps {}
 export interface PeaceOfNews {
@@ -20,17 +22,20 @@ export function News(props: NewsProps) {
     fetch('http://localhost:3333/api/news')
       .then(response => response.json())
       .then(news => {
-        const sortedNews = sortNews(news);
-
-        setNews(sortedNews);
-      })
+        if(!cash.has(news)){
+          cash.clear();
+          cash.add(news);
+          setNews([]); // только для перерисовки
+        } 
+      });
   }, []);
 
   return (
     <div>
       <h1>Последние новости</h1>
       <ul>
-      {news.map(peaceOfNews => {
+      {sortNews([...cash].flat() as PeaceOfNews[])
+      .map(peaceOfNews => {
         return <li key={peaceOfNews.id}>
           <h2>{peaceOfNews.title}</h2>
           <p>{peaceOfNews.description}</p>
